@@ -186,7 +186,7 @@ const IndexPage = () => (
             </div>
             <div className="col-12">
               <select name="department" id="department">
-                <option value="">Choose a department</option>
+                <option value="">Choose a departmendsat</option>
                 <option value="1">Manufacturing</option>
                 <option value="2">Administration</option>
                 <option value="3">Support</option>

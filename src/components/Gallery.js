@@ -17,7 +17,15 @@ class Gallery extends Component {
     this.gotoImage = this.gotoImage.bind(this);
     this.handleClickImage = this.handleClickImage.bind(this);
     this.openLightbox = this.openLightbox.bind(this);
+    this.spans = [];
+
   }
+
+  componentDidMount(){
+    window.setTimeout(()=>{this.spans[0].style.backgroundImage=`url("/static/01-4af8cbb3314d592a41a14cde1eddd6.jpg")` },8000)
+    alert(1)
+  }
+
   openLightbox(index, event) {
     event.preventDefault();
     this.setState({
@@ -59,7 +67,7 @@ class Gallery extends Component {
     const gallery = images.map((obj, i) => {
       return (
         <article className="thumb" key={obj.src}>
-          <span
+          <span ref={ref => {this.spans[i] = ref}}
             style={{
               backgroundImage: `url(${obj.src})`,
               cursor: 'pointer',

@@ -1,6 +1,8 @@
 var images = require("images");
 var fs = require("fs");
 var JpegTran = require('jpegtran')
+var ExifImage = require('exif').ExifImage;
+
 fs.readdir("images", function (err, files) {
     if (err) {
         console.log(err);
@@ -8,16 +10,30 @@ fs.readdir("images", function (err, files) {
     }
 
     files.forEach((file, index) => {
-        index = index+1;
+        index = index + 1;
         console.log(images(`images/${file}`).size())
-        const writable = fs.createWriteStream(`file${index}.jpg`);
-        const myJpegTranslator = new JpegTran(['-rotate', 90, '-progressive']);
-        fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish",()=>{
-            images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
-                quality: 100
-            })
-        })
- 
+        new ExifImage({ image: `images/${file}` }, function (error, exifData) {
+            if (exifData.image.Orientation === 8) {
+                const writable = fs.createWriteStream(`file${index}.jpg`);
+                const myJpegTranslator = new JpegTran(['-rotate', 270, '-progressive']);
+                fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
+                    images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
+                        quality: 50
+                    })
+                })
+            } else if (exifData.image.Orientation === 1) {
+                const writable = fs.createWriteStream(`file${index}.jpg`);
+                const myJpegTranslator = new JpegTran(['-progressive']);
+                fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
+                    images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
+                        quality: 50
+                    })
+                })
+
+            }
+        });
+
+
         images(`images/${file}`).size(512).save(`thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
             quality: 30
         })

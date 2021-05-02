@@ -1,5 +1,6 @@
 var images = require("images");
 var fs = require("fs");
+var JpegTran = require('jpegtran')
 fs.readdir("images", function (err, files) {
     if (err) {
         console.log(err);
@@ -8,9 +9,15 @@ fs.readdir("images", function (err, files) {
 
     files.forEach((file, index) => {
         index = index+1;
-        images(`images/${file}`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
-            quality: 50
+        console.log(images(`images/${file}`).size())
+        const writable = fs.createWriteStream(`file${index}.jpg`);
+        const myJpegTranslator = new JpegTran(['-rotate', 90, '-progressive']);
+        fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish",()=>{
+            images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
+                quality: 100
+            })
         })
+ 
         images(`images/${file}`).size(512).save(`thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
             quality: 30
         })

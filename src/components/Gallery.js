@@ -22,7 +22,7 @@ class Gallery extends Component {
   }
 
   componentDidMount(){
-    window.setTimeout(()=>{this.spans[0].style.backgroundImage=`url("/static/01-4af8cbb3314d592a41a14cde1eddd6.jpg")` },8000) 
+    // window.setTimeout(()=>{this.spans[0].style.backgroundImage=`url("/static/01-4af8cbb3314d592a41a14cde1eddd6.jpg")` },8000) 
   }
 
   openLightbox(index, event) {

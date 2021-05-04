@@ -38,9 +38,9 @@ fs.readdir(imagesPath, function (err, files) {
         });
 
 
-        images(`${imagesPath}/${file}`).size(512).save(`${__dirname}/thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
-            quality: 30
-        })
+        // images(`${imagesPath}/${file}`).size(512).save(`${__dirname}/thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
+        //     quality: 30
+        // })
 
         console.log(`${imagesPath}/${file}`);
     })

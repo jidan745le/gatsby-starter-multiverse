@@ -31,14 +31,18 @@ const img_set = [
 ];
 const IndexPage = () => {
   const [imgset,setSet] = React.useState(img_set);
-//   React.useEffect(()=>{
-//     const VConsole = require("vconsole");
-//     const vConsole = new VConsole();
-// },[])
+  React.useEffect(()=>{
+    const VConsole = require("vconsole");
+    const vConsole = new VConsole();
+},[])
   React.useEffect(()=>{
     const listener = ()=>{
       const html = window.document.documentElement;
-      // console.log(html.clientHeight,html.scrollTop,html.clientHeight + html.scrollTop,html.scrollHeight,window.document.body.scrollTop)
+      console.log(html.clientHeight,
+          html.scrollTop,
+          html.clientHeight + (html.scrollTop || document.body.scrollTop),
+          html.scrollHeight,
+          window.document.body.scrollTop)
       if(Math.ceil(html.clientHeight + (html.scrollTop || document.body.scrollTop)) >= html.scrollHeight){
         const newImgset = [...imgset];
         console.log(newImgset)

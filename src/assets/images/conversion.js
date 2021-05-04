@@ -1,9 +1,12 @@
 var images = require("images");
 var fs = require("fs");
+var path = require("path");
 var JpegTran = require('jpegtran')
 var ExifImage = require('exif').ExifImage;
+const imagesPath= path.resolve(__dirname,"images")
+console.log(`${imagesPath}/01.jpg`)
 
-fs.readdir("images", function (err, files) {
+fs.readdir(imagesPath, function (err, files) {
     if (err) {
         console.log(err);
         return;
@@ -11,21 +14,22 @@ fs.readdir("images", function (err, files) {
 
     files.forEach((file, index) => {
         index = index + 1;
-        console.log(images(`images/${file}`).size())
-        new ExifImage({ image: `images/${file}` }, function (error, exifData) {
+        console.log(images(`${imagesPath}/${file}`).size())
+        new ExifImage({ image: `${imagesPath}/${file}` }, function (error, exifData) {
             if (exifData.image.Orientation === 8) {
-                const writable = fs.createWriteStream(`file${index}.jpg`);
-                const myJpegTranslator = new JpegTran(['-rotate', 270, '-progressive']);
-                fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
-                    images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
+                const writable = fs.createWriteStream(`${__dirname}/file${index}.jpg`);
+                const myJpegTranslator = new JpegTran(['-rotate', 270,'-progressive']);
+                console.log(`${imagesPath}/${file}`)
+                fs.createReadStream(`${imagesPath}/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
+                    images(`${__dirname}/file${index}.jpg`).size(1024).save(`${__dirname}/fulls/${index < 10 ? `0${index}` : index}.jpg`, {
                         quality: 50
                     })
                 })
             } else if (exifData.image.Orientation === 1) {
-                const writable = fs.createWriteStream(`file${index}.jpg`);
+                const writable = fs.createWriteStream(`${__dirname}/file${index}.jpg`);
                 const myJpegTranslator = new JpegTran(['-progressive']);
-                fs.createReadStream(`images/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
-                    images(`file${index}.jpg`).size(1024).save(`fulls/${index < 10 ? `0${index}` : index}.jpg`, {
+                fs.createReadStream(`${imagesPath}/${file}`).pipe(myJpegTranslator).pipe(writable).on("finish", () => {
+                    images(`${__dirname}/file${index}.jpg`).size(1024).save(`${__dirname}/fulls/${index < 10 ? `0${index}` : index}.jpg`, {
                         quality: 50
                     })
                 })
@@ -34,11 +38,11 @@ fs.readdir("images", function (err, files) {
         });
 
 
-        images(`images/${file}`).size(512).save(`thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
+        images(`${imagesPath}/${file}`).size(512).save(`${__dirname}/thumbs/${index < 10 ? `0${index}` : index}.jpg`, {
             quality: 30
         })
 
-        console.log(`images/${file}`);
+        console.log(`${imagesPath}/${file}`);
     })
 })
 // images("images/01.jpg")                     //Load image from file

@@ -29,10 +29,33 @@ const img_set = [
     desc: 'Be one with the light',
   }
 ];
-const IndexPage = () => (
-  <Layout>
-    <Gallery images={img_set} />
+const IndexPage = () => {
+  const [imgset,setSet] = React.useState(img_set);
+
+  React.useEffect(()=>{
+    const listener = ()=>{
+      const html = window.document.documentElement;
+      if(Math.ceil(html.clientHeight + html.scrollTop) >= html.scrollHeight){
+        const newImgset = [...imgset];
+        console.log(newImgset)
+        newImgset.push({
+          src: require('../assets/images/fulls/03.jpg'),
+          thumbnail: require('../assets/images/thumbs/03.jpg'),
+          title: 'Any time ',
+          desc: 'Be one with the time',
+        })
+        setSet(newImgset)
+        window.removeEventListener("scroll",listener)
+      }
+      
+    }
+    window.addEventListener("scroll",listener)
+  })
+  return <Layout>
+    <Gallery images={imgset} />
   </Layout>
-);
+}
+
+
 
 export default IndexPage;

@@ -31,15 +31,15 @@ const img_set = [
 ];
 const IndexPage = () => {
   const [imgset,setSet] = React.useState(img_set);
-  React.useEffect(()=>{
-    const VConsole = require("vconsole");
-    const vConsole = new VConsole();
-},[])
+//   React.useEffect(()=>{
+//     const VConsole = require("vconsole");
+//     const vConsole = new VConsole();
+// },[])
   React.useEffect(()=>{
     const listener = ()=>{
       const html = window.document.documentElement;
-      console.log(html.clientHeight,html.scrollTop,html.clientHeight + html.scrollTop,html.scrollHeight,window.document.body)
-      if(Math.ceil(html.clientHeight + html.scrollTop) >= html.scrollHeight){
+      // console.log(html.clientHeight,html.scrollTop,html.clientHeight + html.scrollTop,html.scrollHeight,window.document.body.scrollTop)
+      if(Math.ceil(html.clientHeight + (html.scrollTop || document.body.scrollTop)) >= html.scrollHeight){
         const newImgset = [...imgset];
         console.log(newImgset)
         newImgset.push({
@@ -47,6 +47,11 @@ const IndexPage = () => {
           thumbnail: require('../assets/images/thumbs/03.jpg'),
           title: 'Any time ',
           desc: 'Be one with the time',
+        }, {
+          src: require('../assets/images/fulls/04.jpg'),
+          thumbnail: require('../assets/images/thumbs/04.jpg'),
+          title: 'Any source of light',
+          desc: 'Be one with the light',
         })
         setSet(newImgset)
         window.removeEventListener("scroll",listener)
